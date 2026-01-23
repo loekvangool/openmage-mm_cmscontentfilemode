@@ -49,7 +49,7 @@ class MM_CmsContentFileMode_Model_Observer
                 $object->setContent($fileContent);
                 $object->save();
                 
-                $this->getHelper()->getSessionMessage()->addNotice(
+                $this->getHelper()->getSessionMessage()?->addNotice(
                     sprintf("Loaded new content from file: %s",  $this->getHelper()->stripBaseDir($filePath))
                 );
             } 
@@ -59,7 +59,7 @@ class MM_CmsContentFileMode_Model_Observer
             file_put_contents($filePath, $object->getContent());
             $this->_shouldRecompileTailwind = true;
             
-            $this->getHelper()->getSessionMessage()->addSuccess(
+            $this->getHelper()->getSessionMessage()?->addSuccess(
                 sprintf("Static content file not found, silently created new file: %s",  $this->getHelper()->stripBaseDir($filePath))
             );
         }
@@ -73,7 +73,7 @@ class MM_CmsContentFileMode_Model_Observer
             if ($_contentDiffers) {
                 file_put_contents($filePath, $object->getContent());
                 
-                $this->getHelper()->getSessionMessage()->addNotice(
+                $this->getHelper()->getSessionMessage()?->addNotice(
                     sprintf("Change saved to file: %s", $this->getHelper()->stripBaseDir($filePath))
                 );
             }
@@ -82,7 +82,7 @@ class MM_CmsContentFileMode_Model_Observer
             file_put_contents($filePath, $object->getContent());
             $this->_shouldRecompileTailwind = true;
             
-            $this->getHelper()->getSessionMessage()->addNotice(
+            $this->getHelper()->getSessionMessage()?->addNotice(
                 sprintf("Change saved to file: %s", $this->getHelper()->stripBaseDir($filePath))
             );
         }
@@ -99,11 +99,11 @@ class MM_CmsContentFileMode_Model_Observer
     
             if (file_exists($oldFilePath)) {
                 rename($oldFilePath, $filePath);
-                $this->getHelper()->getSessionMessage()->addWarning(
+                $this->getHelper()->getSessionMessage()?->addWarning(
                     sprintf("Rename %s → %s",  $this->getHelper()->stripBaseDir($oldFilePath),  $this->getHelper()->stripBaseDir($filePath))
                 );
             } else {
-                $this->getHelper()->getSessionMessage()->addError(
+                $this->getHelper()->getSessionMessage()?->addError(
                     sprintf("Rename error: File %s not found",  $this->getHelper()->stripBaseDir($oldFilePath))
                 );
             }
@@ -116,7 +116,7 @@ class MM_CmsContentFileMode_Model_Observer
             return;
         }
         if (!file_exists($filePath)) {
-            $this->getHelper()->getSessionMessage()->addError("Process tailwindcss error: File " . $filePath . " not found");
+            $this->getHelper()->getSessionMessage()?->addError("Process tailwindcss error: File " . $filePath . " not found");
             return;
         }
         $this->getHelperTailwind()->compileTailwindcss($storeId);
