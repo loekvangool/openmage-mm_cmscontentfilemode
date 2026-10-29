@@ -15,6 +15,7 @@
 The extension creates a file copy and keeps it synced with the content of enabled CMS Static Blocks and Pages.
 
 The copy is kept synchronized in both directions, meaning that saving a static block updates the file copy and vice versa! 
+Importing file changes back into the database is off by default and must be enabled per host, see [Import from files](#import-from-files-file--database).
 
 This allows working directly on the file with all the benefits that an IDE can offer, such as auto-completion, syntax highlighting, and more, instead of working in the textarea.
 
@@ -45,6 +46,34 @@ For example:
 - files are correctly renamed if you modify the identifier or url_key
 - ! files are not deleted if a static block/page is removed
 - If your static block / page is assigned to multiple store views with different themes applied, files will be created in all corresponding locations
+
+## Import from files (file → database)
+
+Saving a static block / page always writes its content to the file, on every host.
+
+The other direction is controlled by a per-host flag in `app/etc/local.xml`. When enabled, loading an enabled static block / page compares the file with the database content and, if they differ, saves the file content to the database (the file wins, no timestamp check).
+
+**Default: disabled.** Without the flag, loading never changes or saves the static block / page. A missing file is still created from the database content.
+
+The flag lives in `local.xml` rather than in `System -> Configuration` because the configuration is stored in the database, which is shared when several checkouts (hosts) run against one database. If every host imported its own files, a host with an older file would revert the database on its next load, and hosts could overwrite each other back and forth.
+
+Recommended setup for multiple hosts sharing one database:
+- enable the flag on exactly one host;
+- commit changes to the files and pull them on every host, so the files stay identical everywhere.
+
+`app/etc/local.xml` on the one importing host:
+```xml
+<config>
+    <global>
+        <mm_cmscontentfilemode>
+            <import_from_files>1</import_from_files>
+        </mm_cmscontentfilemode>
+    </global>
+</config>
+```
+Add the `<mm_cmscontentfilemode>` node inside the existing `<global>` node and flush the configuration cache. Any value other than `1` disables the import.
+
+`System -> Configuration -> Content Management` shows whether import is enabled on the host that rendered the page, with its hostname.
 
 # ⚠️ Important ⚠️
 ## Know issue:

@@ -5,6 +5,7 @@ class MM_CmsContentFileMode_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_CONFIG_THEME = 'design/theme/template';
     const XML_PATH_CONFIG_TAILWIND = 'cms/mm_cmscontentfilemode/enable_tailwindcss';
     const XML_PATH_CONFIG_TAILWIND_FORCE_COMPILE = 'cms/mm_cmscontentfilemode/force_tailwindcompile';
+    const XML_PATH_IMPORT_FROM_FILES = 'global/mm_cmscontentfilemode/import_from_files';
 
     const TYPE_CMSBLOCK = 'static_block';
     const TYPE_CMSPAGE = 'static_page';
@@ -122,6 +123,17 @@ class MM_CmsContentFileMode_Helper_Data extends Mage_Core_Helper_Abstract
             return false;
         }
         return Mage::getStoreConfigFlag(self::XML_PATH_CONFIG_TAILWIND_FORCE_COMPILE, $storeId);
+    }
+
+    /**
+     * Whether this host imports mirror files into the database on load.
+     * Read from app/etc/local.xml (per host), not from core_config_data (shared).
+     *
+     * @return bool
+     */
+    public function isImportFromFilesEnabled()
+    {
+        return trim((string) Mage::getConfig()->getNode(self::XML_PATH_IMPORT_FROM_FILES)) === '1';
     }
 
     public function getSessionMessage()

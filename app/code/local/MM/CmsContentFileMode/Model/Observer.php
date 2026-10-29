@@ -42,9 +42,12 @@ class MM_CmsContentFileMode_Model_Observer
     protected function syncFileToContent($object, $filePath, $storeId)
     {        
         if (file_exists($filePath)) {
-            $fileContent = file_get_contents($filePath);
-            // Write the content to the file
-            $_contentDiffers = $fileContent !== $object->getContent();
+            // Import the file into the database only on hosts that enable it in local.xml
+            $_contentDiffers = false;
+            if ($this->getHelper()->isImportFromFilesEnabled()) {
+                $fileContent = file_get_contents($filePath);
+                $_contentDiffers = $fileContent !== $object->getContent();
+            }
             if ($_contentDiffers) {             
                 $object->setContent($fileContent);
                 $object->save();

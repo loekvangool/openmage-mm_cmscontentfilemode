@@ -28,6 +28,21 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </enabled_static_page>
+                        <import_from_files_status translate="label comment">
+                            <label>Import from files (this host)</label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>mm_cmscontentfilemode/adminhtml_system_config_importfromfiles</frontend_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                            <![CDATA[
+                            Per-host setting read from app/etc/local.xml, not from this page. Admin requests may be served by any host.<br />
+                            To enable, set global/mm_cmscontentfilemode/import_from_files = 1 in app/etc/local.xml on exactly one host.
+                            ]]>
+                            </comment>
+                        </import_from_files_status>
                         <enable_tailwindcss translate="label">
                             <label>Enable Tailwind CSS</label>
                             <frontend_type>select</frontend_type>
