@@ -182,7 +182,7 @@ class MM_CmsContentFileMode_Model_Observer
 	public function configTinyMceEditor(Varien_Event_Observer $observer)
 	{
         /**
-         * setContentCss moved to app/design/adminhtml/default/default/template/mm/cmscontentfilemode/tinymcetemplatelist.phtml
+         * setContentCss moved to app/design/adminhtml/base/default/template/mm/cmscontentfilemode/tinymcetemplatelist.phtml
          * cause openMage removed "content_css: this.config.content_css" in js\mage\adminhtml\wysiwyg\tinymce\setup.js@getSettings()
          */
 	    $config = $observer->getConfig();
